@@ -35,6 +35,12 @@ def infer_object(
             with open(os.path.join(object_output_path, cam, image), 'w') as f:
                 json.dump(data, f)
 
+def get_pod_index():
+    """Get the pod index from environment variables."""
+    # Try different ways to get pod index
+    # hostname = os.environ.get('HOSTNAME', '')
+    return int(os.environ.get('JOB_COMPLETION_INDEX', 0))
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--root_dir', type=str, required=True)
@@ -55,8 +61,21 @@ if __name__ == "__main__":
         assert min_object <= args.range[0], "Min value out of range"
         assert max_object >= args.range[1], "Max value out of range"
 
-    objects_to_run = [str(item) for item in range(*args.range) if str(item) in all_objects]
+    # Generate images for a subset of subjects based on pod index
+    pod_index = get_pod_index()
+    total_pods = int(os.environ.get('JOB_PARALLELISM', 1))
 
-    for object in tqdm(objects_to_run, desc=f"Loop through object list"):
+    objects_to_run = sorted([str(item) for item in range(*args.range) if str(item) in all_objects])
+    len_objects = len(objects_to_run)
+
+    starting_index = len_objects // total_pods * pod_index
+    ending_index = min(len_objects // total_pods * (pod_index + 1), len_objects)
+
+    if ending_index == len_objects:
+        object_list = objects_to_run[starting_index]
+    else:
+        object_list = objects_to_run[starting_index:ending_index]
+
+    for object in tqdm(object_list, desc=f"Loop through object list"):
         logging.info(f"Face recognition for object {object}")
         infer_object(object, args.root_dir, args.output_dir)

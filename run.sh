@@ -1,6 +1,6 @@
 #/bin/bash
 
 python face-recognition.py \
-    --root_dir \
-    --output_dir \
-    --range 100001 100500
+    --root_dir /workspace/datasetvol/mvhuman_data/mv_captures \
+    --output_dir /workspace/datasetvol/mvhuman_data/face_bboxes \
+    --range 100001 100501
