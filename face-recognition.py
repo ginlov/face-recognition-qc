@@ -44,7 +44,7 @@ if __name__ == "__main__":
     logging.info(f"Run face recognition for images in {args.root_dir}, save results to {args.output_dir}")
     logging.info(f"Object range: {args.range[0]}-{args.range[1]}")
     all_objects = os.listdir(args.root_dir)
-    all_objects = [item for item in all_objects if not item.startswith(('json', 'txt'))]
+    all_objects = [item for item in all_objects if not item.endswith(('json', 'txt'))]
     assert len(all_objects) > 0, "Empty root directory"
 
     if args.range != [0, -1]:
