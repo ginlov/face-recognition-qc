@@ -15,7 +15,7 @@ def infer_object(
     ):
     os.makedirs(output_dir, exist_ok=True)
 
-    object_root_path = os.path.join(root_dir, object, 'image_lr')
+    object_root_path = os.path.join(root_dir, object, 'images_lr')
     object_output_path = os.path.join(output_dir, object)
 
     cam_list = os.listdir(object_root_path)
