@@ -31,7 +31,7 @@ def infer_object(
                 data = {}
             else:
                 data = faces[0]
-                data = {key: int(v) if not isinstance(v, list) else [int(item) for item in v] for key, v in data.items()}
+                data = {key: int(v) if not isinstance(v, tuple) else [int(item) for item in v] for key, v in data.items()}
             with open(os.path.join(object_output_path, cam, image), 'w') as f:
                 json.dump(data, f)
 
