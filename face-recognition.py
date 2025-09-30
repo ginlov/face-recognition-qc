@@ -13,14 +13,14 @@ def infer_object(
         root_dir: str,
         output_dir: str
     ):
-    os.mkdir(output_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
 
     object_root_path = os.path.join(root_dir, object, 'image_lr')
     object_output_path = os.path.join(output_dir, object)
 
     cam_list = os.listdir(object_root_path)
     for cam in tqdm(cam_list, desc="Run through cam list"):
-        os.mkdir(os.path.join(object_output_path, cam), exist_ok=True)
+        os.makedirs(os.path.join(object_output_path, cam), exist_ok=True)
         image_list = os.listdir(os.path.join(object_root_path, cam))
         for image in image_list:
             img = cv2.imread(os.path.join(object_root_path, cam, image))
