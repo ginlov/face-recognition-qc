@@ -31,7 +31,7 @@ def infer_object(
                 data = {}
             else:
                 data = faces[0]
-            with open(os.path.join(object_output_path, cam, image), 'wb') as f:
+            with open(os.path.join(object_output_path, cam, image), 'w') as f:
                 json.dump(data, f)
 
 if __name__ == "__main__":
