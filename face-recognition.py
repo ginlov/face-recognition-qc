@@ -64,6 +64,7 @@ if __name__ == "__main__":
     # Generate images for a subset of subjects based on pod index
     pod_index = get_pod_index()
     total_pods = int(os.environ.get('JOB_PARALLELISM', 1))
+    logging.info(f"Total pods {total_pods}")
 
     objects_to_run = sorted([str(item) for item in range(*args.range) if str(item) in all_objects])
     len_objects = len(objects_to_run)
@@ -72,7 +73,7 @@ if __name__ == "__main__":
     ending_index = min(len_objects // total_pods * (pod_index + 1), len_objects)
 
     if ending_index == len_objects:
-        object_list = objects_to_run[starting_index]
+        object_list = objects_to_run[starting_index:]
     else:
         object_list = objects_to_run[starting_index:ending_index]
 
