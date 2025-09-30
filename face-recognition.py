@@ -36,8 +36,8 @@ def infer_object(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--root_dir', type=str, required=True, dest="Root image folder")
-    parser.add_argument('--output_dir', type=str, required=True, dest="Ouptut image folder")
+    parser.add_argument('--root_dir', type=str, required=True)
+    parser.add_argument('--output_dir', type=str, required=True)
     parser.add_argument('--range', type=int, nargs=2, metavar=('START', 'END'), default=[0, -1], help="Range of objects to process (start end)")
 
     args = parser.parse_args()
