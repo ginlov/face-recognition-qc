@@ -1,5 +1,4 @@
 from retinaface import RetinaFace
-from tqdm import tqdm
 import time
 import cv2
 import argparse
@@ -19,7 +18,7 @@ def infer_object(
     object_output_path = os.path.join(output_dir, object)
 
     cam_list = os.listdir(object_root_path)
-    for cam in tqdm(cam_list, desc="Run through cam list"):
+    for cam in cam_list:
         os.makedirs(os.path.join(object_output_path, cam), exist_ok=True)
         image_list = os.listdir(os.path.join(object_root_path, cam))
         for image in image_list:
@@ -92,6 +91,6 @@ if __name__ == "__main__":
     else:
         object_list = objects_to_run[starting_index:ending_index]
 
-    for object in tqdm(object_list, desc=f"Loop through object list"):
+    for object in object_list:
         print(f"Face recognition for object {object}")
         infer_object(object, args.root_dir, args.output_dir)
