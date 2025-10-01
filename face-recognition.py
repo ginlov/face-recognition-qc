@@ -12,7 +12,6 @@ def infer_object(
         object: str,
         root_dir: str,
         output_dir: str,
-        model
     ):
     os.makedirs(output_dir, exist_ok=True)
 
