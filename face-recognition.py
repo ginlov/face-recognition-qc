@@ -4,8 +4,9 @@ import cv2
 import argparse
 import os
 import json
+import re
 
-model = RetinaFace('high')
+model = RetinaFace()
 
 def infer_object(
         object: str,
@@ -21,7 +22,14 @@ def infer_object(
     for cam in cam_list:
         os.makedirs(os.path.join(object_output_path, cam), exist_ok=True)
         image_list = os.listdir(os.path.join(object_root_path, cam))
-        for image in image_list:
+        selected_images = [
+            img for img in image_list
+            if pattern.match(img) and int(pattern.match(img).group(1)) % 100 == 5 ]
+
+        for image in selected_iamges:
+            dest_path = os.path.join(object_output_path, cam, image)
+            if os.path.exists(dest_path):
+                continue
             # --- timing starts here ---
             t0 = time.perf_counter()
             img = cv2.imread(os.path.join(object_root_path, cam, image))
@@ -37,7 +45,7 @@ def infer_object(
                 data = {key: int(v) if not isinstance(v, tuple) else [int(item) for item in v]
                         for key, v in data.items()}
 
-            with open(os.path.join(object_output_path, cam, image), 'w') as f:
+            with open(dest_path, 'w') as f:
                 json.dump(data, f)
             t3 = time.perf_counter()
 
