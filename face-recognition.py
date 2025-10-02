@@ -1,4 +1,5 @@
 from retinaface import RetinaFace
+from tqdm import tqdm
 import time
 import cv2
 import argparse
@@ -25,6 +26,7 @@ def infer_object(
         selected_images = [
             img for img in image_list
             if pattern.match(img) and int(pattern.match(img).group(1)) % 100 == 5 ]
+        print(len(selected_images), "images selected for camera", cam)
 
         for image in selected_iamges:
             dest_path = os.path.join(object_output_path, cam, image)
@@ -54,8 +56,6 @@ def infer_object(
             detect_time = t2 - t1
             dump_time = t3 - t2
             total_time = t3 - t0
-
-            print(f"[{cam}/{image}] read: {read_time:.4f}s | detect: {detect_time:.4f}s | dump: {dump_time:.4f}s | total: {total_time:.4f}s")
 
 def get_pod_index():
     """Get the pod index from environment variables."""
