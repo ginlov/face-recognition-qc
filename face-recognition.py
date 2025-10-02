@@ -29,7 +29,7 @@ def infer_object(
             if pattern.match(img) and int(pattern.match(img).group(1)) % 100 == 5 ]
         print(len(selected_images), "images selected for camera", cam)
 
-        for image in selected_iamges:
+        for image in selected_images:
             dest_path = os.path.join(object_output_path, cam, image)
             if os.path.exists(dest_path):
                 continue
