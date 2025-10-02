@@ -20,6 +20,7 @@ def infer_object(
     object_output_path = os.path.join(output_dir, object)
 
     cam_list = os.listdir(object_root_path)
+    pattern = re.compile(r"^(\d{2}05)_img\.jpg$")
     for cam in tqdm(cam_list, desc=f"Processing cameras for object {object}"):
         os.makedirs(os.path.join(object_output_path, cam), exist_ok=True)
         image_list = os.listdir(os.path.join(object_root_path, cam))
