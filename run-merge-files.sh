@@ -1,3 +1,3 @@
 #/bin/bash
 
-python merge_files.py
+python merge-files.py
