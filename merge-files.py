@@ -1,16 +1,18 @@
 import os
 import json
+import re
+import cv2
 from tqdm import tqdm
+from retinaface import RetinaFace
 
 parent_fold = '/workspace/datasetvol/mvhuman_data/face_bboxes'
+pattern = re.compile(r"^(\d{2}05)_img\.jpg$")
+source_fold = '/workspace/datasetvol/mvhuman_data/mv_captures'
+model = RetinaFace()
 
 def read_file(file):
-    try:
-        with open(file, 'r') as f:
-            return json.load(f)
-    except Exception as e:
-        print(f"Error reading {file}: {e}")
-        raise e
+    with open(file, 'r') as f:
+        return json.load(f)
 
 def process_objects(args):
     """Process a list of objects and return their data."""
@@ -31,8 +33,18 @@ def process_objects(args):
             local_data[obj][cam] = {}
             for file in os.listdir(cam_path):
                 file_path = os.path.join(cam_path, file)
-                local_data[obj][cam][file] = read_file(file_path)
-
+                try:
+                    local_data[obj][cam][file] = read_file(file_path)
+                except:
+                    if pattern.match(file):
+                        img = cv2.imread(os.path.join(source_fold, obj, 'images_lr', cam, file))
+                        faces = model.predict(img)
+                        if len(faces) == 0:
+                            continue
+                        data = faces[0]
+                        data = {key: int(v) if not isinstance(v, tuple) else [int(item) for item in v]
+                                for key, v in data.items()}
+                        local_data[obj][cam][file] = data
     return local_data
 
 def get_pod_index():
