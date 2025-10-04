@@ -5,8 +5,12 @@ from tqdm import tqdm
 parent_fold = '/workspace/datasetvol/mvhuman_data/face_bboxes'
 
 def read_file(file):
-    with open(file, 'r') as f:
-        return json.load(f)
+    try:
+        with open(file, 'r') as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"Error reading {file}: {e}")
+        raise e
 
 def process_objects(args):
     """Process a list of objects and return their data."""
