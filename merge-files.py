@@ -22,7 +22,6 @@ def process_objects(args):
     for obj in tqdm(
         obj_list,
         desc=f"Proc {process_idx+1}",
-        position=process_idx,  # 👈 each process gets its own line
         leave=True,
         ncols=100
     ):
