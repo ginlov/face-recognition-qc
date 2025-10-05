@@ -2,6 +2,7 @@ import os
 import json
 import re
 import cv2
+import time
 import sys
 from tqdm import tqdm
 from retinaface import RetinaFace
@@ -21,6 +22,7 @@ def process_objects(args):
     obj_list, process_idx = args  # unpack
     local_data = {}
 
+    start_time = time.time()
     for i, obj in enumerate(tqdm(
         obj_list,
         desc=f"Proc {process_idx+1}",
@@ -29,8 +31,10 @@ def process_objects(args):
         dynamic_ncols=False,
         disable=False
     )):
+        elapsed_time = time.time() - start_time
         if i % 1 == 0:  # Log every 100 items
-            tqdm.write(f"Proc {process_idx+1}: {i}/{len(obj_list)} processed, ETA: {tqdm.format_interval((len(obj_list)-i)/max(1, (i+1)/(tqdm.format_interval(1))))}")
+            eta = (len(obj_list) - i) * (elapsed_time / max(1, i))
+            tqdm.write(f"Proc {process_idx+1}: {i}/{len(obj_list)} processed, ETA: {tqdm.format_interval(eta)}")
 
         obj_path = os.path.join(parent_fold, obj)
         local_data[obj] = {}
