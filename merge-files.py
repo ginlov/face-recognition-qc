@@ -21,13 +21,17 @@ def process_objects(args):
     obj_list, process_idx = args  # unpack
     local_data = {}
 
-    for obj in tqdm(
+    for i, obj in enumerate(tqdm(
         obj_list,
         desc=f"Proc {process_idx+1}",
         file=sys.stdout,
         ascii=True,
-        dynamic_ncols=False
-    ):
+        dynamic_ncols=False,
+        disable=False
+    )):
+        if i % 1 == 0:  # Log every 100 items
+            tqdm.write(f"Proc {process_idx+1}: {i}/{len(obj_list)} processed, ETA: {tqdm.format_interval((len(obj_list)-i)/max(1, (i+1)/(tqdm.format_interval(1))))}")
+
         obj_path = os.path.join(parent_fold, obj)
         local_data[obj] = {}
         for cam in os.listdir(obj_path):
