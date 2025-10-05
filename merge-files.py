@@ -2,6 +2,7 @@ import os
 import json
 import re
 import cv2
+import sys
 from tqdm import tqdm
 from retinaface import RetinaFace
 
@@ -23,6 +24,9 @@ def process_objects(args):
     for obj in tqdm(
         obj_list,
         desc=f"Proc {process_idx+1}",
+        file=sys.stdout,
+        ascii=True,
+        dynamic_ncols=False
     ):
         obj_path = os.path.join(parent_fold, obj)
         local_data[obj] = {}
