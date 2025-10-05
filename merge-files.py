@@ -16,14 +16,13 @@ def read_file(file):
 
 def process_objects(args):
     """Process a list of objects and return their data."""
+    print(f"Running process objects {args[1]}")
     obj_list, process_idx = args  # unpack
     local_data = {}
 
     for obj in tqdm(
         obj_list,
         desc=f"Proc {process_idx+1}",
-        leave=True,
-        ncols=100
     ):
         obj_path = os.path.join(parent_fold, obj)
         local_data[obj] = {}
